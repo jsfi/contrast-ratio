@@ -1,0 +1,11 @@
+{
+    "options": {
+        "browsers": [
+            "> 1%",
+            "last 2 versions",
+            "Firefox ESR"
+        ],
+        "map": true
+    },
+    "build": { "src": "css/main.css" }
+}

@@ -1,0 +1,25 @@
+{
+    "html": {
+        "files": ["index.dev.html", "index.html"],
+        "options": { "livereload": true }
+    },
+    "css": {
+        "files": ["css/*.css"],
+        "options": { "livereload": true }
+    },
+    "scss": {
+        "files": ["dev/scss/*.scss"],
+        "tasks": [
+            "sass",
+            "autoprefixer"
+        ]
+    },
+    "js": {
+        "files": ["js/*.js"],
+        "options": { "livereload": true }
+    },
+    "js_dev": {
+        "files": ["dev/js/**/*.js"],
+        "tasks": [ "webpack" ]
+    }
+}

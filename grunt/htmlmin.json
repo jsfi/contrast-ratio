@@ -1,0 +1,12 @@
+{
+    "dist": {
+        "options": {
+            "collapseWhitespace": true,
+            "minifyCSS": true,
+            "removeComments": true
+        },
+        "files": {
+            "index.html": ["index.dev.html"]
+        }
+    }
+}
