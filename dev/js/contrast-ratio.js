@@ -1,14 +1,20 @@
 'use strict';
 
-module.exports = function(Color) {
-    /*global incrementable, Incrementable*/
+var Color = require('./color');
 
+var count = 0;
+
+module.exports = function() {
     var background = document.getElementById('background');
     var foreground = document.getElementById('foreground');
+    var output = document.getElementById('output');
+    var ratio = document.getElementById('ratio');
+    var error = document.getElementById('error');
     var backgroundDisplay = document.getElementById('backgroundDisplay');
     var foregroundDisplay = document.getElementById('foregroundDisplay');
     var results = document.getElementById('results');
     var swap = document.getElementById('swap');
+    var favicon = document.getElementById('favicon');
 
     var messages = {
         'semitransparent': 'The background is semi-transparent, so the contrast ratio cannot be precise. Depending on what’s going to be underneath, it could be any of the following:',
@@ -23,19 +29,6 @@ module.exports = function(Color) {
 
     canvas.width = canvas.height = 16;
     document.body.appendChild(canvas);
-
-    incrementable.onload = function() {
-        if (window.Incrementable) {
-            new Incrementable(background);
-            new Incrementable(foreground);
-        }
-    };
-
-    if (window.Incrementable) {
-        incrementable.onload();
-    }
-
-    var output = $('output');
 
     var levels = {
         'fail': {
@@ -55,6 +48,34 @@ module.exports = function(Color) {
             color: 'hsl(95, 60%, 41%)'
         }
     };
+
+    background.addEventListener('input', input);
+    background.addEventListener('keydown', keydown);
+    foreground.addEventListener('input', input);
+    foreground.addEventListener('keydown', keydown);
+
+    swap.addEventListener('click', click);
+
+    window.encodeURIComponent = (function(){
+        var encodeURIComponent = window.encodeURIComponent;
+
+        return function (str) {
+            return encodeURIComponent(str).replace(/[()]/g, function ($0) {
+                return escape($0);
+            });
+        };
+    })();
+
+    window.decodeURIComponent = (function(){
+        var decodeURIComponent = window.decodeURIComponent;
+
+        return function (str) {
+            return str.search(/%[\da-f]/i) > -1? decodeURIComponent(str) : str;
+        };
+    })();
+
+    hashchange();
+    window.onhashchange = hashchange;
 
     function rangeIntersect(min, max, upper, lower) {
         return (max < upper? max : upper) - (lower < min? min : lower);
@@ -112,9 +133,7 @@ module.exports = function(Color) {
                 }
             }
 
-            $('strong', output).textContent = contrast.ratio;
-
-            var error = $('.error', output);
+            ratio.textContent = contrast.ratio;
 
             if (contrast.error) {
                 error.textContent = '±' + contrast.error;
@@ -179,7 +198,7 @@ module.exports = function(Color) {
             ctx.fillStyle = foreground.color + '';
             ctx.fillRect(8, 0, 8, 16);
 
-            $('link[rel="shortcut icon"]').setAttribute('href', canvas.toDataURL());
+            favicon.setAttribute('href', canvas.toDataURL());
         }
     }
 
@@ -194,7 +213,7 @@ module.exports = function(Color) {
         var previousColor = getComputedStyle(display).backgroundColor;
 
         // Match a 6 digit hex code, add a hash in front.
-        if(input.value.match(/^[0-9a-f]{6}$/i)) {
+        if (input.value.match(/^[0-9a-f]{6}$/i)) {
             input.value = '#' + input.value;
         }
 
@@ -208,16 +227,18 @@ module.exports = function(Color) {
                 backgroundDisplay.style.color = input.value;
             }
 
-            input.color = new Color(color);
-
-            return true;
+            try {
+                input.color = new Color(color);
+                return true;
+            } catch(e) {
+                return false;
+            }
         }
 
         return false;
     }
 
     function hashchange() {
-
         if (location.hash) {
             var colors = location.hash.slice(1).split('-on-');
 
@@ -229,12 +250,11 @@ module.exports = function(Color) {
             background.value = background.defaultValue;
         }
 
-        background.oninput();
-        foreground.oninput();
+        background.dispatchEvent(new Event('input'));
+        foreground.dispatchEvent(new Event('input'));
     }
 
-    background.oninput =
-    foreground.oninput = function() {
+    function input() {
         var valid = colorChanged(this);
 
         if (valid) {
@@ -242,8 +262,33 @@ module.exports = function(Color) {
         }
     }
 
-    swap.onclick = function() {
+    function keydown(e) {
+        var color;
+
+        if (e.keyCode !== 38 && e.keyCode !== 40) {
+            return;
+        }
+
+        color = this.value;
+
+        e.preventDefault();
+    }
+
+    function color2Array(color) {
+        var parts = color.split(',');
+
+        if (parts.length < 3) {
+            return [];
+        }
+
+        return color.split(',').map(function(part) {
+            return parseInt(part.match(/\d+/), 10);
+        }).slice(0,3);
+    }
+
+    function click() {
         var backgroundColor = background.value;
+
         background.value = foreground.value;
         foreground.value = backgroundColor;
 
@@ -252,29 +297,4 @@ module.exports = function(Color) {
 
         update();
     }
-
-    window.encodeURIComponent = (function(){
-        var encodeURIComponent = window.encodeURIComponent;
-
-        return function (str) {
-            return encodeURIComponent(str).replace(/[()]/g, function ($0) {
-                return escape($0);
-            });
-        };
-    })();
-
-    window.decodeURIComponent = (function(){
-        var decodeURIComponent = window.decodeURIComponent;
-
-        return function (str) {
-            return str.search(/%[\da-f]/i) > -1? decodeURIComponent(str) : str;
-        };
-    })();
-
-    function $(expr, con) {
-        return typeof expr === 'string'? (con || document).querySelector(expr) : expr;
-    }
-
-    hashchange();
-    window.onhashchange = hashchange;
 }

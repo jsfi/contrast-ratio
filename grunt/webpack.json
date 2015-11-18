@@ -1,8 +1,0 @@
-{
-    "build": {
-        "entry": "./dev/js/main.js",
-        "output": {
-            "filename": "js/main.js"
-        }
-    }
-}

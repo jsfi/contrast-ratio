@@ -1,1 +1,1 @@
-require('./contrast-ratio')(require('./color'));
+require('./contrast-ratio')();
