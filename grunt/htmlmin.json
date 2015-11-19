@@ -6,7 +6,7 @@
             "removeComments": true
         },
         "files": {
-            "index.html": ["index.dev.html"]
+            "dist/index.html": ["build/index.html"]
         }
     }
 }

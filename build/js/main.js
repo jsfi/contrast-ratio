@@ -317,7 +317,7 @@
 	    function keydown(e) {
 	        var action = false;
 	        var amount = 1;
-	        var color, format;
+	        var color, format, newColor;
 
 	        if (e.keyCode === 38) {
 	            action = 'lighten';
@@ -339,7 +339,17 @@
 	        try {
 	            color = new Color(color);
 	            color[action](amount);
-	            this.value = color[format + 'String']();
+	            newColor = color[format + 'String']();
+
+	            if (format === 'hex') {
+	                newColor = newColor.toLowerCase();
+
+	                if (newColor.charAt(1) === newColor.charAt(2) && newColor.charAt(3) === newColor.charAt(4) && newColor.charAt(5) === newColor.charAt(6)) {
+	                    newColor = newColor.charAt(0) + newColor.charAt(1) + newColor.charAt(3) + newColor.charAt(5);
+	                }
+	            }
+
+	            this.value = newColor;
 	            this.dispatchEvent(new Event('input'));
 
 	            e.preventDefault();

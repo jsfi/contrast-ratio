@@ -1,0 +1,7 @@
+{
+    "dist": {
+        "files": {
+            "dist/js/main.js": ["build/js/main.js"]
+        }
+    }
+}

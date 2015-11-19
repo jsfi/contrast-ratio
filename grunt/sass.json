@@ -1,7 +1,15 @@
 {
     "build": {
         "files": {
-            "css/main.css": ["dev/scss/main.scss"]
+            "build/css/main.css": ["dev/scss/main.scss"]
+        }
+    },
+    "dist": {
+        "options": {
+            "style": "compressed"
+        },
+        "files": {
+            "dist/css/main.css": ["dev/scss/main.scss"]
         }
     }
 }

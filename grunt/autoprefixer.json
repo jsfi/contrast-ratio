@@ -7,5 +7,5 @@
         ],
         "map": true
     },
-    "build": { "src": "css/main.css" }
+    "build": { "src": "build/css/main.css" }
 }

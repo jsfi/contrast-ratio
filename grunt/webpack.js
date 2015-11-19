@@ -2,7 +2,7 @@ module.exports = {
     build: {
         entry: './dev/js/main.js',
         output: {
-            filename: 'js/main.js'
+            filename: 'build/js/main.js'
         },
         module: {
             loaders: [

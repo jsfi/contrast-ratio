@@ -1,21 +1,21 @@
 {
     "html": {
-        "files": ["index.dev.html", "index.html"],
+        "files": ["build/index.html"],
         "options": { "livereload": true }
     },
     "css": {
-        "files": ["css/*.css"],
+        "files": ["build/css/*.css"],
         "options": { "livereload": true }
     },
     "scss": {
         "files": ["dev/scss/*.scss"],
         "tasks": [
-            "sass",
+            "sass:build",
             "autoprefixer"
         ]
     },
     "js": {
-        "files": ["js/*.js"],
+        "files": ["build/js/*.js"],
         "options": { "livereload": true }
     },
     "js_dev": {
