@@ -1,0 +1,49 @@
+.github-corner {
+    height: 80px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.octo {
+    fill: #fff;
+
+    &__arm,
+    &__body {
+        fill: #000;
+    }
+
+    &__arm {
+        transform-origin:130px 106px;
+
+        .octo:hover & {
+            animation: octo-wave 560ms ease-in-out;
+        }
+    }
+}
+
+@keyframes octo-wave {
+    0%, 100% {
+        transform: rotate(0);
+    }
+
+    20%, 60% {
+        transform: rotate(-25deg);
+    }
+
+    40%, 80% {
+        transform: rotate(10deg)
+    }
+}
+
+@media (max-width:500px) {
+    .octo {
+        &__arm{
+            animation: octo-wave 560ms ease-in-out;
+
+            .octo:hover & {
+                animation: none
+            }
+        }
+    }
+}

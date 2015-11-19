@@ -19,7 +19,7 @@ a {
 }
 
 .title {
-    margin-bottom: 1.3em;
+    margin: 40px 80px 60px;
     text-indent: -1.7em;
     text-transform: lowercase;
     letter-spacing: -1px;
@@ -142,14 +142,14 @@ a {
     bottom: 0;
     z-index: -1;
 
-    a:hover {
-        color: black;
-        background: yellow;
-    }
-
     &__inner {
         max-width: 480px;
         font-size: .75em;
+
+        a:hover {
+            color: black;
+            background: yellow;
+        }
     }
 
     &__title {
@@ -259,6 +259,8 @@ a {
                     0 1px .3em .05em rgba(0,0,0,.6) inset;
     }
 }
+
+@import "gh-corner";
 
 canvas {
     display: none;
