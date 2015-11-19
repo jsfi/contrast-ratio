@@ -2,6 +2,18 @@
 
 var Color = require('color');
 
+Color.prototype.lighten = function(ratio) {
+    this.values.hsl[2] += ratio;
+    this.setValues('hsl', this.values.hsl);
+    return this;
+};
+
+Color.prototype.darken = function(ratio) {
+    this.values.hsl[2] -= ratio;
+    this.setValues('hsl', this.values.hsl);
+    return this;
+};
+
 Color.prototype.luminance = function() {
     // Formula: http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
     var rgb = this.rgbArray();

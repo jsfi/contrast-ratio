@@ -140,10 +140,9 @@
 	        var color = input.color;
 
 	        if (input.color.alpha < 1) {
-	            input.title += color.overlayOn(Color.BLACK).luminance + ' - ' + color.overlayOn(Color.WHITE).luminance;
-	        }
-	        else {
-	            input.title += color.luminance;
+	            input.title += color.overlayOn(Color.BLACK).luminance() + ' - ' + color.overlayOn(Color.WHITE).luminance();
+	        } else {
+	            input.title += color.luminance();
 	        }
 	    }
 
@@ -316,27 +315,37 @@
 	    }
 
 	    function keydown(e) {
-	        var color;
+	        var action = false;
+	        var amount = 1;
+	        var color, format;
 
-	        if (e.keyCode !== 38 && e.keyCode !== 40) {
-	            return;
+	        if (e.keyCode === 38) {
+	            action = 'lighten';
+	        } else if (e.keyCode === 40) {
+	            action = 'darken';
+	        }
+
+	        if (!action) {
+	            return false;
+	        }
+
+	        if (e.shiftKey) {
+	            amount *= 10;
 	        }
 
 	        color = this.value;
+	        format = getFormat(color);
 
-	        e.preventDefault();
-	    }
+	        try {
+	            color = new Color(color);
+	            color[action](amount);
+	            this.value = color[format + 'String']();
+	            this.dispatchEvent(new Event('input'));
 
-	    function color2Array(color) {
-	        var parts = color.split(',');
-
-	        if (parts.length < 3) {
-	            return [];
+	            e.preventDefault();
+	        } catch(e) {
+	            //do nothing
 	        }
-
-	        return color.split(',').map(function(part) {
-	            return parseInt(part.match(/\d+/), 10);
-	        }).slice(0,3);
 	    }
 
 	    function click() {
@@ -350,6 +359,22 @@
 
 	        update();
 	    }
+
+	    function getFormat(color) {
+	        if (color.indexOf('#') === 0) {
+	            return 'hex';
+	        } else if (color.indexOf('rgba') === 0) {
+	            return 'rgba';
+	        } else if (color.indexOf('hsla') === 0) {
+	            return 'hsla';
+	        } else if (color.indexOf('hsl') === 0) {
+	            return 'hsl';
+	        } else if (color.indexOf('hwb') === 0) {
+	            return 'hwb';
+	        }
+
+	        return 'rgb';
+	    }
 	}
 
 
@@ -360,6 +385,18 @@
 	'use strict';
 
 	var Color = __webpack_require__(3);
+
+	Color.prototype.lighten = function(ratio) {
+	    this.values.hsl[2] += ratio;
+	    this.setValues('hsl', this.values.hsl);
+	    return this;
+	};
+
+	Color.prototype.darken = function(ratio) {
+	    this.values.hsl[2] -= ratio;
+	    this.setValues('hsl', this.values.hsl);
+	    return this;
+	};
 
 	Color.prototype.luminance = function() {
 	    // Formula: http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
