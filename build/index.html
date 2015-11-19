@@ -7,49 +7,53 @@
     <link rel="stylesheet" href="css/main.css" />
 </head>
 <body>
-    <h1 class="title">
-        <a href="#">
-            <span class="title__inner">Contrast</span>
-            <span class="title__inner">ratio</span>
-        </a>
-    </h1>
+    <div class="color-control">
+        <h1 class="title">
+            <a href="#">
+                <span class="title__inner">Contrast</span>
+                <span class="title__inner">ratio</span>
+            </a>
+        </h1>
 
-    <label class="background">
-        <span class="background__inner">Background:</span>
-        <input id="background" value="white" autofocus />
-    </label>
+        <label class="background">
+            <span class="background__inner">Background:</span>
+            <input id="background" value="white" autofocus />
+        </label>
 
-    <label class="foreground">
-        <span class="foreground__inner">Text color:</span>
-        <input id="foreground" value="hsla(200,0%,0%,.7)" />
-    </label>
+        <label class="foreground">
+            <span class="foreground__inner">Text color:</span>
+            <input id="foreground" value="hsla(200,0%,0%,.7)" />
+        </label>
 
-    <output id="output" tabindex="0">
-        <strong id="ratio">?</strong>
-        <span id="error"></span>
-    </output>
+        <output id="output" tabindex="0">
+            <strong id="ratio">?</strong>
+            <span id="error"></span>
+        </output>
 
-    <section id="results"></section>
+        <section id="results"></section>
+    </div>
 
-    <section class="color-display" id="backgroundDisplay">
-        <div class="color-display__inner">
-            <h2 class="color-display__title">How to use</h2>
-            <p>As you type, the contrast ratio indicated will update. Hover over the circle to get more detailed information. When semi-transparent colors are involved as backgrounds, the contrast ratio will have an error margin, to account for the different colors they may be over.</p>
-            <p style="font-family: Garamond, 'Palatino Linotype', Georgia, serif;">This sample text attempts to visually demonstrate how readable this color combination is, for normal or <strong>bold</strong> text of various sizes and font styles.</p>
-            <div class="hint">
-                <p><strong>Hint:</strong> Press the up and down keyboard arrows while over a number inside a functional color notation. Watch it increment/decrement. Try with the Shift or Alt key too!</p>
+    <div class="color-displays">
+        <section class="color-display" id="backgroundDisplay">
+            <div class="color-display__inner">
+                <h2 class="color-display__title">How to use</h2>
+                <p>As you type, the contrast ratio indicated will update. Hover over the circle to get more detailed information. When semi-transparent colors are involved as backgrounds, the contrast ratio will have an error margin, to account for the different colors they may be over.</p>
+                <p style="font-family: Garamond, 'Palatino Linotype', Georgia, serif;">This sample text attempts to visually demonstrate how readable this color combination is, for normal or <strong>bold</strong> text of various sizes and font styles.</p>
+                <div class="hint">
+                    <p><strong>Hint:</strong> Press the up and down keyboard arrows while over a number inside a functional color notation. Watch it increment/decrement. Try with the Shift or Alt key too!</p>
+                </div>
+                <footer class="color-display__footer">
+                    By <a href="http://lea.verou.me" target="_blank">Lea Verou</a>
+                    &bull; <a href="http://www.w3.org/TR/WCAG/#visual-audio-contrast" target="_blank">WCAG 2.0 on contrast ratio</a>
+                </footer>
             </div>
-            <footer class="color-display__footer">
-                By <a href="http://lea.verou.me" target="_blank">Lea Verou</a>
-                &bull; <a href="http://www.w3.org/TR/WCAG/#visual-audio-contrast" target="_blank">WCAG 2.0 on contrast ratio</a>
-            </footer>
-        </div>
-    </section>
+        </section>
 
-    <section class="color-display" id="foregroundDisplay">
-        <button type="button" id="swap">Set as background color</button>
+        <section class="color-display" id="foregroundDisplay">
+            <button type="button" id="swap">Set as background color</button>
 
-    </section>
+        </section>
+    </div>
 
     <script src="js/main.js"></script>
 </body>
