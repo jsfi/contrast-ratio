@@ -2,6 +2,7 @@
 
 var Color = require('color');
 
+// lighten/darken with constant distance
 Color.prototype.lighten = function(ratio) {
     this.values.hsl[2] += ratio;
     this.setValues('hsl', this.values.hsl);
@@ -52,15 +53,17 @@ Color.prototype.overlayOn = function (color) {
 Color.prototype.contrast = function (color) {
     // Formula: http://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
     var alpha = this.alpha();
+    var l1, l2, ratio;
+    var onBlack, onWhite, min, max, rgb, closest;
 
     if (alpha >= 1) {
         if (color.alpha() < 1) {
             color = color.overlayOn(this);
         }
 
-        var l1 = this.luminance() + .05,
-            l2 = color.luminance() + .05,
-            ratio = l1/l2;
+        l1 = this.luminance() + .05;
+        l2 = color.luminance() + .05;
+        ratio = l1/l2;
 
         if (l2 > l1) {
             ratio = 1 / ratio;
@@ -78,19 +81,19 @@ Color.prototype.contrast = function (color) {
 
     // If we’re here, it means we have a semi-transparent background
     // The text color may or may not be semi-transparent, but that doesn't matter
+    onBlack = this.overlayOn(Color.BLACK).contrast(color).ratio;
+    onWhite = this.overlayOn(Color.WHITE).contrast(color).ratio;
 
-    var onBlack = this.overlayOn(Color.BLACK).contrast(color).ratio,
-        onWhite = this.overlayOn(Color.WHITE).contrast(color).ratio;
+    max = Math.max(onBlack, onWhite);
 
-    var max = Math.max(onBlack, onWhite);
-
-    var closest = this.rgbArray().map(function(c, i) {
-        return Math.min(Math.max(0, (color.rgb[i] - c * alpha)/(1-alpha)), 255);
+    rgb = color.rgbArray();
+    closest = this.rgbArray().map(function(c, i) {
+        return Math.min(Math.max(0, (rgb[i] - c * alpha) / (1-alpha)), 255);
     });
 
-    closest = new Color(closest);
+    closest = Color().rgb(closest);
 
-    var min = this.overlayOn(closest).contrast(color).ratio;
+    min = this.overlayOn(closest).contrast(color).ratio;
 
     return {
         ratio: preciseRound((min + max) / 2, 2),

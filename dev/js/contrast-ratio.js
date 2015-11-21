@@ -2,9 +2,7 @@
 
 var Color = require('./color');
 
-var count = 0;
-
-module.exports = function() {
+module.exports = function() {    
     var background = document.getElementById('background');
     var foreground = document.getElementById('foreground');
     var output = document.getElementById('output');
@@ -84,9 +82,9 @@ module.exports = function() {
     function updateLuminance(input) {
         input.title = 'Relative luminance: ';
 
-        var color = input.color;
+        var color = input.color.clone();
 
-        if (input.color.alpha < 1) {
+        if (color.alpha() < 1) {
             input.title += color.overlayOn(Color.BLACK).luminance() + ' - ' + color.overlayOn(Color.WHITE).luminance();
         } else {
             input.title += color.luminance();
@@ -227,7 +225,7 @@ module.exports = function() {
             }
 
             try {
-                input.color = new Color(color);
+                input.color = Color(color);
                 return true;
             } catch(e) {
                 return false;
@@ -243,8 +241,7 @@ module.exports = function() {
 
             foreground.value = decodeURIComponent(colors[0]);
             background.value = decodeURIComponent(colors[1]);
-        }
-        else {
+        } else {
             foreground.value = foreground.defaultValue;
             background.value = background.defaultValue;
         }
