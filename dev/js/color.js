@@ -17,7 +17,7 @@ Color.prototype.darken = function(ratio) {
 
 Color.prototype.luminance = function() {
     // Formula: http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
-    var rgb = this.rgbArray();
+    var rgb = this.clone().rgbArray();
 
     for(var i=0; i<3; i++) {
         var color = rgb[i];
@@ -55,6 +55,8 @@ Color.prototype.contrast = function (color) {
     var alpha = this.alpha();
     var l1, l2, ratio;
     var onBlack, onWhite, min, max, rgb, closest;
+
+    color = color.clone();
 
     if (alpha >= 1) {
         if (color.alpha() < 1) {

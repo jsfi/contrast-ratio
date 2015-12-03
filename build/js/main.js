@@ -55,7 +55,7 @@
 
 	var Color = __webpack_require__(2);
 
-	module.exports = function() {    
+	module.exports = function() {
 	    var background = document.getElementById('background');
 	    var foreground = document.getElementById('foreground');
 	    var output = document.getElementById('output');
@@ -299,8 +299,9 @@
 	            background.value = background.defaultValue;
 	        }
 
-	        background.dispatchEvent(new Event('input'));
-	        foreground.dispatchEvent(new Event('input'));
+	        colorChanged(background);
+	        colorChanged(foreground);
+	        update();
 	    }
 
 	    function input() {
@@ -408,7 +409,7 @@
 
 	Color.prototype.luminance = function() {
 	    // Formula: http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
-	    var rgb = this.rgbArray();
+	    var rgb = this.clone().rgbArray();
 
 	    for(var i=0; i<3; i++) {
 	        var color = rgb[i];
@@ -446,6 +447,8 @@
 	    var alpha = this.alpha();
 	    var l1, l2, ratio;
 	    var onBlack, onWhite, min, max, rgb, closest;
+
+	    color = color.clone();
 
 	    if (alpha >= 1) {
 	        if (color.alpha() < 1) {

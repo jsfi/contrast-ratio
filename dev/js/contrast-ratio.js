@@ -2,7 +2,7 @@
 
 var Color = require('./color');
 
-module.exports = function() {    
+module.exports = function() {
     var background = document.getElementById('background');
     var foreground = document.getElementById('foreground');
     var output = document.getElementById('output');
@@ -246,8 +246,9 @@ module.exports = function() {
             background.value = background.defaultValue;
         }
 
-        background.dispatchEvent(new Event('input'));
-        foreground.dispatchEvent(new Event('input'));
+        colorChanged(background);
+        colorChanged(foreground);
+        update();
     }
 
     function input() {
